@@ -234,6 +234,7 @@ exports.getDimensions = function(req,res) {
 	];
 
 	var requestURL = urlBuilder(hostAddress,pathName,xmlaServer);
+  var query = requestURL.query;
 
 	var fragments = requestURL.pathname.split("/"),
 		decodedFragments = decodeFragments(fragments),
@@ -320,6 +321,7 @@ exports.getHierarchies = function(req,res) {
 	];
 
 	var requestURL = urlBuilder(hostAddress,pathName,xmlaServer);
+  var query = requestURL.query;
 
 	var fragments = requestURL.pathname.split("/"),
 		decodedFragments = decodeFragments(fragments),
@@ -409,6 +411,7 @@ exports.getLevels = function(req,res) {
 	];
 
 	var requestURL = urlBuilder(hostAddress,pathName,xmlaServer);
+  var query = requestURL.query;
 
 	var fragments = requestURL.pathname.split("/"),
 		decodedFragments = decodeFragments(fragments),
@@ -501,6 +504,7 @@ exports.getMembers = function(req,res) {
 	];
 
 	var requestURL = urlBuilder(hostAddress,pathName,xmlaServer);
+  var query = requestURL.query;
 
 	var fragments = requestURL.pathname.split("/"),
 		decodedFragments = decodeFragments(fragments),
