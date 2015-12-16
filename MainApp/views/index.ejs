@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Visual BI</title>
+    <!-- Mobile viewport optimized -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<!-- Bootstrap CSS -->
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Custom CSS -->
+		<link href="css/mystyles2.css" rel="stylesheet">
+
+		<!-- Include Modernizr in the head, before any other Javascript -->
+		<script src="js/modernizr-2.6.2.min.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid" id="main">
+      <div class="row">
+        <div class="col-xs-3" id= "left-menu">
+          <div id="left-menu-wrapper">
+            <h4 id="cubeName">Select cube</h4>
+            <div id="head-div">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
+                Choose cube name
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="myModalLabel">Server details</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p>
+                        <label for="url">Server URL</label>
+                        <input type="search" name="url" id="url" value="http://172.23.238.252:8080/pentaho/Xmla%3fuserid=admin%26password=password">
+                      </p>
+                      <p>
+                        <label for="dataSource">DataSource</label>
+                        <select class="dataSourceNameList" name="dataSource" id="dataSource">
+                          <option value="">select</option>
+                        </select>
+                      </p>
+                      <p>
+                        <label for="catalog">Catalog</label>
+                        <select class="catalogNameList" name="catalog" id="catalog">
+                          <option value="">select</option>
+                        </select>
+                      </p>
+                      <p>
+                        <label for="cube">Cube</label>
+                        <select class="cubeNameList" name="cube" id="cube">
+                          <option value="">select</option>
+                        </select>
+                      </p>
+                    </div> <!-- modal-body end-->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" data-dismiss="modal" id="save">Save</button>
+                    </div> <!-- modal-footer end -->
+                  </div> <!-- modal-content end -->
+                </div> <!-- modal-dialog end -->
+              </div> <!-- myModal end-->
+            </div> <!-- head-div end-->
+            <h4>Dimensions</h4>
+            <div id='dim-div'>
+              <!-- adding dimensions from json -->
+            </div>
+            <h4>Measures</h4>
+            <div id="measures-div">
+              <!-- adding measures from json -->
+            </div>
+          </div> <!-- left-menu-wrapper end-->
+        </div> <!-- left-menu end-->
+        <div class="col-xs-8" id="content">
+          <div class="navbar navbar-fixed-top">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-print"></span></button>
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-download-alt"></span></button>
+            </div>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-print"></span></button>
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-download-alt"></span></button>
+            </div>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-print"></span></button>
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-download-alt"></span></button>
+            </div>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-print"></span></button>
+              <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-download-alt"></span></button>
+            </div>
+          </div> <!-- navbar-end -->
+          <div id="content-wrapper">
+            <div class="row myRect">
+              <div class="col-xs-2">
+                <h4>Columns</h4>
+              </div>
+              <div class="col-xs-10 columns">
+                <ul class="nav">
+                  <li class="placeholder">Drag measures/dimensions here</li>
+                </ul>
+              </div> <!-- col-xs-10 end-->
+            </div> <!-- myRect end-->
+            <div class="row myRect">
+              <div class="col-xs-2">
+                <h4>Rows</h4>
+              </div>
+              <div class="col-xs-10 columns">
+                <ul class="nav">
+                  <li class="placeholder">Drag measures/dimensions here</li>
+                </ul>
+              </div> <!-- col-xs-10 end-->
+            </div> <!-- myRect end-->
+            <div class="row myRect">
+              <div class="col-xs-2">
+                <h4>Filters</h4>
+              </div>
+              <div class="col-xs-10 columns">
+                <ul class="nav">
+                  <li class="placeholder">Drag measures/dimensions here</li>
+                </ul>
+              </div> <!-- col-xs-10 end-->
+            </div> <!-- myRect end-->
+            <div class="row">
+              <div class="col-xs-12">
+                <button class="btn btn-info btn-lg" id="executeButton">Execute</button>
+                  <div class="section_result">
+                    <table id="dataTable">
+                      <tbody id="dataTableBody">
+                        <script id="axis0_insersion">
+                        {{axis0}}
+                        </script>
+                        <script id="axis1_insersion">
+                        {{axis1}}
+                        </script>
+                      </tbody>
+                    </table>
+                  </div> <!-- section_result end-->
+              </div> <!-- col-sm-12 end-->
+            </div> <!-- row end-->
+          </div> <!-- content-wrapper end-->
+        </div> <!-- col-xs-8 end-->
+        <div class="col-xs-1" id="right-menu">
+          <div class="right-menu-wrapper">
+            <div class="btn-group-vertical" role="group">
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span></button>
+            </div> <!-- btn-group end -->
+          </div> <!-- menu-wrapper-end -->
+        </div> <!-- right-menu end -->
+      </div> <!-- row end-->
+    </div> <!--container main end -->
+
+  <!-- jquery -->
+  <script src="js/jquery-2.1.4.js"></script>
+
+  <!-- jquery-ui -->
+  <script src="js/jquery-ui.min.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+
+  <!-- implementing grid -->
+  <script src="js/executebutton.js"></script>
+
+  <!-- Custom JS -->
+  <script src='js/myscript2.js'></script>
+
+
+  </body>
+</html>
