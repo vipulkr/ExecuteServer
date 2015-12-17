@@ -28,13 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/execute', execute);
-// app.use('/dataSource_details', discover.getDataSourceName);
-// app.use('/catalog_details', discover.getCatalogName);
-// app.use('/cube_details', discover.getCubeName);
-app.use('/dimension_details', discover.getDimensions);
-app.use('/hierarchy_details', discover.getDimensions);
-app.use('/level_details', discover.getDimensions);
-app.use('/member_details', discover.getDimensions);
+app.use('/get_children', discover.getDimensions);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
