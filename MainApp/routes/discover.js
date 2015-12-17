@@ -2,14 +2,8 @@
 var http = require("http");
 var xmla = require("./Xmla.js");
 var url = require("url");
-var xmlaRequest = {};
 
 //Necessary functions
-
-//Build the url from components
-function urlBuilder(host,pathName,query) {
-   return url.parse(host+pathName+"?url="+query,true);
-}
 
 //Decode the pathName of the url
 function decodeFragments(fragments) {
@@ -18,203 +12,6 @@ function decodeFragments(fragments) {
   		decodedFragments.push(decodeURIComponent(fragments[i]));
 	}
 	return decodedFragments;
-}
-
-//------------------------------------1. DataSourceName----------------------------------------------------
-exports.getDataSourceName = function(req,res) {
-	var X = xmla.Xmla;
-	var parameters = req.query;
-	var xmlaServer = parameters.xmlaServer;
-	var pathName = parameters.pathName;
-	var hostAddress = "http://localhost:8080";
-
-	var discoverRequestTypes =[
-		null,
-		{name: X.DISCOVER_DATASOURCES, key:"DataSourceName", property:X.PROP_DATASOURCEINFO}
-	];
-
-	var requestURL = urlBuilder(hostAddress,pathName,xmlaServer);
-
-	var fragments = requestURL.pathname.split("/"),
-		decodedFragments = decodeFragments(fragments),
-		numFragments = fragments.length,
-		properties = {},
-		restrictions = {},
-		discoverRequestType = discoverRequestTypes[numFragments];
-
-	var xmlaRequest = {
-  		async:true,
-  		url:decodeURIComponent(xmlaServer),
-  		success:function(xmla,xmlaRequest,xmlaResponse) {
-    		var temp = JSON.stringify(xmlaResponse.fetchAllAsObject(),null,2);
-    		returnObj = JSON.parse(temp);
-    		res.send(temp);
-    		res.end();
-  		},
-  		error:function(){
-    		res.write("Error finding the DataSourceName");
-
-  		},
-  		callback:function() {
-    		res.end();
-  		}
-  	}
-
-  	requestURL.fragments = fragments;
-  	requestURL.decodedFragments = decodedFragments;
-
-  	//Check the number of fragments
-  	if (!xmlaRequest.method) {
-        xmlaRequest.method = X.METHOD_DISCOVER;
-        if (fragments[1] === "") {
-            xmlaRequest.requestType = X.DISCOVER_DATASOURCES;
-        }
-        else {
-            xmlaRequest.requestType = discoverRequestType.name;
-            xmlaRequest.restrictions = restrictions;
-        }
-    }
-
-	var x = new xmla.Xmla;
-	x.request(xmlaRequest);
-}
-
-//---------------------------------------2. Catalog Name----------------------------------------------
-exports.getCatalogName = function(req,res) {
-	var X = xmla.Xmla;
-	var parameters = req.query;
-	var xmlaServer = parameters.xmlaServer;
-	var pathName = parameters.pathName;
-	var hostAddress = "http://localhost:8080";
-
-	var discoverRequestTypes =[
-		null,
-		{name: X.DISCOVER_DATASOURCES, key:"DataSourceName", property:X.PROP_DATASOURCEINFO},
-		{name: X.DBSCHEMA_CATALOGS, key: "CATALOG_NAME", property: X.PROP_CATALOG}
-	];
-
-	var requestURL = urlBuilder(hostAddress,pathName,xmlaServer);
-
-	var fragments = requestURL.pathname.split("/"),
-		decodedFragments = decodeFragments(fragments),
-		numFragments = fragments.length,
-		properties = {},
-		restrictions = {},
-		discoverRequestType = discoverRequestTypes[numFragments];
-
-	var xmlaRequest = {
-  		async:true,
-  		url:decodeURIComponent(xmlaServer),
-  		success:function(xmla,xmlaRequest,xmlaResponse) {
-    		var temp = JSON.stringify(xmlaResponse.fetchAllAsObject(),null,2);
-    		returnObj = JSON.parse(temp);
-    		res.send(temp);
-    		res.end();
-  		},
-  		error:function(){
-    		res.write("Error finding the CATALOG_NAME");
-
-  		},
-  		callback:function() {
-    		res.end();
-  		}
-  	}
-
-  	requestURL.fragments = fragments;
-  	requestURL.decodedFragments = decodedFragments;
-
-  	//Check the number of fragments
-  	if (fragments[1] !== "") {
-		properties[discoverRequestTypes[1].property] = decodedFragments[1];
-		xmlaRequest.properties = properties;
-	}
-
-	if (!xmlaRequest.method) {
-		xmlaRequest.method = X.METHOD_DISCOVER;
-		if (fragments[1] === "") {
-	    	xmlaRequest.requestType = X.DISCOVER_DATASOURCES;
-	  	}
-	  	else {
-	    	xmlaRequest.requestType = discoverRequestType.name;
-	    	xmlaRequest.restrictions = restrictions;
-	  	}
-	}
-
-	var x = new xmla.Xmla;
-	x.request(xmlaRequest);
-}
-
-//----------------------------------------3.Cube Name-----------------------------------------------------
-exports.getCubeName = function(req,res) {
-	var X = xmla.Xmla;
-	var parameters = req.query;
-	var xmlaServer = parameters.xmlaServer;
-	var pathName = parameters.pathName;
-	var hostAddress = "http://localhost:8080";
-
-	var discoverRequestTypes =[
-		null,
-		{name: X.DISCOVER_DATASOURCES, key:"DataSourceName", property:X.PROP_DATASOURCEINFO},
-		{name: X.DBSCHEMA_CATALOGS, key: "CATALOG_NAME", property: X.PROP_CATALOG},
-		{name: X.MDSCHEMA_CUBES, key: "CUBE_NAME", property: X.PROP_CUBE}
-	];
-
-	var requestURL = urlBuilder(hostAddress,pathName,xmlaServer);
-
-	var fragments = requestURL.pathname.split("/"),
-		decodedFragments = decodeFragments(fragments),
-		numFragments = fragments.length,
-		properties = {},
-		restrictions = {},
-		discoverRequestType = discoverRequestTypes[numFragments];
-
-	var xmlaRequest = {
-  		async:true,
-  		url:decodeURIComponent(xmlaServer),
-  		success:function(xmla,xmlaRequest,xmlaResponse) {
-    		var temp = JSON.stringify(xmlaResponse.fetchAllAsObject(),null,2);
-    		returnObj = JSON.parse(temp);
-    		res.send(temp);
-    		res.end();
-  		},
-  		error:function(){
-    		res.write("Error finding the CATALOG_NAME");
-
-  		},
-  		callback:function() {
-    		res.end();
-  		}
-  	}
-
-  	requestURL.fragments = fragments;
-  	requestURL.decodedFragments = decodedFragments;
-
-  	//Check the number of fragments
-  	switch(numFragments) {
-  		case 3 :
-  			restrictions[discoverRequestTypes[2].key] = properties[discoverRequestTypes[2].property] = decodedFragments[2];
-  			xmlaRequest.restrictions = restrictions;
-
-  		case 2 :
-          	if (fragments[1] !== "") {
-            	properties[discoverRequestTypes[1].property] = decodedFragments[1];
-            	xmlaRequest.properties = properties;
-          	}
-
-          	if (!xmlaRequest.method) {
-            	xmlaRequest.method = X.METHOD_DISCOVER;
-            	if (fragments[1] === "") {
-                	xmlaRequest.requestType = X.DISCOVER_DATASOURCES;
-              	}
-              	else {
-                	xmlaRequest.requestType = discoverRequestType.name;
-                	xmlaRequest.restrictions = restrictions;
-              	}
-          	}
-  	}
-
-	var x = new xmla.Xmla;
-	x.request(xmlaRequest);
 }
 
 //----------------------------------------4. Dimesnions-----------------------------------------------
@@ -236,10 +33,10 @@ exports.getDimensions = function(req,res) {
     {name: X.MDSCHEMA_MEMBERS, key: "MEMBER_UNIQUE_NAME"}
   ];
 
-	var requestURL = urlBuilder(hostAddress,pathName,xmlaServer);
-  var query = requestURL.query;
+	var requestURL = {};
+  var query = "?url="+xmlaServer;
 
-	var fragments = requestURL.pathname.split("/"),
+	var fragments = pathName.split("/"), //pathName
 		decodedFragments = decodeFragments(fragments),
 		numFragments = fragments.length,
 		properties = {},

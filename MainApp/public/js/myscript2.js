@@ -37,7 +37,7 @@
   $('#url').on('keyup', function(e){
    if(e.keyCode === 13) {
      var parameters = { xmlaServer: $(this).val(), pathName: "/" };
-       $.get( '/dataSource_details',parameters, function(data) {
+       $.get( '/dimension_details',parameters, function(data) {
          console.log(data);
          data.forEach(function(item){
           console.log(item.DataSourceName);
@@ -51,7 +51,7 @@
   $('#myModal #dataSource').on('change', function() {
     var parameters = {xmlaServer: $('#url').val(), pathName: "/"+$(this).val()};
     console.log(parameters);
-    $.get('/catalog_details', parameters, function(data) {
+    $.get('/dimension_details', parameters, function(data) {
       console.log(data);
       data.forEach(function(item){
        console.log(item.CATALOG_NAME);
@@ -64,7 +64,7 @@
   $('#myModal #catalog').on('change', function() {
     var parameters = {xmlaServer: $('#url').val(), pathName: "/"+ $('#dataSource').val() + "/" + $(this).val()};
     console.log(parameters);
-    $.get('/cube_details', parameters, function(data) {
+    $.get('/dimension_details', parameters, function(data) {
       console.log(data);
       data.forEach(function(item){
        console.log(item.CUBE_NAME);
