@@ -22,15 +22,15 @@ exports.getDimensions = function(req,res) {
 	var pathName = parameters.pathName;
 	var hostAddress = "http://localhost:8080";
 
-	var discoverRequestTypes =[
+  var discoverRequestTypes =[
     null,
-    {name: X.DISCOVER_DATASOURCES, key:"DataSourceName", property:X.PROP_DATASOURCEINFO},
-    {name: X.DBSCHEMA_CATALOGS, key: "CATALOG_NAME", property: X.PROP_CATALOG},
-    {name: X.MDSCHEMA_CUBES, key: "CUBE_NAME", property: X.PROP_CUBE},
-    {name: X.MDSCHEMA_DIMENSIONS, key: "DIMENSION_UNIQUE_NAME"},
-    {name: X.MDSCHEMA_HIERARCHIES, key: "HIERARCHY_UNIQUE_NAME"},
-    {name: X.MDSCHEMA_LEVELS, key: "LEVEL_UNIQUE_NAME"},
-    {name: X.MDSCHEMA_MEMBERS, key: "MEMBER_UNIQUE_NAME"}
+    {name: X.DISCOVER_DATASOURCES, key:"DataSourceName", value:"DataSourceName", property:X.PROP_DATASOURCEINFO, level:"Data Source"},
+    {name: X.DBSCHEMA_CATALOGS, key: "CATALOG_NAME", value:"CATALOG_NAME", property: X.PROP_CATALOG, level:"Catalog"},
+    {name: X.MDSCHEMA_CUBES, key: "CUBE_NAME", value:"CUBE_NAME", property: X.PROP_CUBE, level:"Cube"},
+    {name: X.MDSCHEMA_DIMENSIONS, key: "DIMENSION_UNIQUE_NAME", value:"DIMENSION_NAME", level:"DIMENSION"},
+    {name: X.MDSCHEMA_HIERARCHIES, key: "HIERARCHY_UNIQUE_NAME", value:"HIERARCHY_NAME", level:"HIERARCHY`"},
+    {name: X.MDSCHEMA_LEVELS, key: "LEVEL_UNIQUE_NAME", value:"LEVEL_NAME", level:"LEVEL"},
+    {name: X.MDSCHEMA_MEMBERS, key: "MEMBER_UNIQUE_NAME", value:"MEMBER_NAME", level:"MEMBER"}
   ];
 
 	var requestURL = {};
@@ -41,22 +41,32 @@ exports.getDimensions = function(req,res) {
 		numFragments = fragments.length,
 		properties = {},
 		restrictions = {},
+    temp = {},
 		discoverRequestType = discoverRequestTypes[numFragments];
 
 	var xmlaRequest = {
   		async:true,
   		url:decodeURIComponent(xmlaServer),
   		success:function(xmla,xmlaRequest,xmlaResponse) {
-    		var temp = JSON.stringify(xmlaResponse.fetchAllAsObject(),null,2);
-    		returnObj = JSON.parse(temp);
-    		res.send(temp);
-    		res.end();
+    		temp = xmlaResponse.fetchAllAsObject();
   		},
   		error:function(){
     		res.write("Error finding the Required Data");
 
   		},
   		callback:function() {
+        var result={},
+          numFragments=fragments[1]===""?1:fragments.length;
+        values=[];
+        result.key=discoverRequestTypes[numFragments].level;
+        for(var obj in temp){
+          values[values.length]={
+                                    caption_name:temp[obj][discoverRequestTypes[numFragments].value],
+                                    unique_name:temp[obj][discoverRequestTypes[numFragments].key]
+                              };
+        }
+        result.values=values;
+    		res.send(result);
     		res.end();
   		}
   	}
